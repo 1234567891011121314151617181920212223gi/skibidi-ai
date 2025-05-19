@@ -71,8 +71,10 @@ Contributions are welcome! See the **Disclaimer** for my Discord.
   
   *If you have trust issues, this probably isn't for you*
 
+  *also, the app is still in development, expect bugs. Report it to my Discord.*
   <br/>
   
   [`Built with 💜 and questionable decisions`](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
   
+  [Discord here](https://discordapp.com/users/822863893692284948)
 </div>
