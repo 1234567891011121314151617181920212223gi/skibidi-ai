@@ -37,6 +37,7 @@ export default function ChatPage() {
           throw new Error(data.error || 'Failed to fetch character');
         }
 
+        console.log('Character data loaded:', data.character); // Debug log
         setCharacter(data.character);
         
         // Add initial message if it exists
@@ -84,27 +85,56 @@ export default function ChatPage() {
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (!input.trim() || !apiSettings || !apiType) return;
+    if (!input.trim() || !apiSettings || !apiType || !character) return;
 
     const userMessage = input.trim();
     setInput('');
     
-    // Add user message to chat
     setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
-    
-    // Start AI typing animation
     setIsTyping(true);
 
     try {
       let response;
-      const messageHistory = [
-        {
-          role: 'system',
-          content: apiSettings.customPrompt
-            .replace('{{char}}', character.name)
-            .replace('{{personality}}', character.personality || '')
-            .replace('{{scenario}}', character.scenario || '')
+      // Create detailed system prompt with all character context and custom prompt from settings
+      const systemPrompt = `
+You are roleplaying as ${character.name}. Here are your characteristics and guidelines:
+
+# Character Details
+Name: ${character.name}
+Personality: ${character.personality || 'Not specified'}
+Current Scenario: ${character.scenario || 'Not specified'}
+
+# Background Information
+${character.bio || ''}
+
+# Example Dialogues
+${character.exampleDialogs || 'No specific examples provided'}
+
+# Important Instructions
+- Stay in character at all times
+- Match the personality traits described above
+- Keep responses consistent with the scenario
+- Use the example dialogues as a reference for tone and style
+- Never acknowledge being an AI or break character
+- Maintain the character's unique speech patterns and mannerisms
+
+# Custom Instructions
+${apiSettings.customPrompt || ''}`.trim();
+
+      console.log('Debug - Full System Prompt:', {
+        characterInfo: {
+          name: character.name,
+          personality: character.personality,
+          scenario: character.scenario,
+          bio: character.bio,
+          exampleDialogs: character.exampleDialogs
         },
+        customPrompt: apiSettings.customPrompt,
+        fullPrompt: systemPrompt
+      });
+
+      const messageHistory = [
+        { role: 'system', content: systemPrompt },
         ...messages.map(msg => ({
           role: msg.role,
           content: msg.content
@@ -191,6 +221,34 @@ export default function ChatPage() {
     }
   };
 
+  const formatMessage = (content) => {
+    return content.split('\n').map((text, i) => {
+      const parts = text.split(/(\*[^*]+\*|\*\*[^*]+\*\*)/g);
+      return (
+        <p key={i} className="mb-2">
+          {parts.map((part, j) => {
+            if (part.startsWith('**') && part.endsWith('**')) {
+              // Bold text
+              return (
+                <span key={j} className="font-bold">
+                  {part.slice(2, -2)}
+                </span>
+              );
+            } else if (part.startsWith('*') && part.endsWith('*')) {
+              // Italic/faded text
+              return (
+                <span key={j} className="text-gray-400 italic">
+                  {part.slice(1, -1)}
+                </span>
+              );
+            }
+            return part;
+          })}
+        </p>
+      );
+    });
+  };
+
   return (
     <div className="min-h-screen bg-black">
       <Navbar />
@@ -238,7 +296,7 @@ export default function ChatPage() {
                           : 'bg-gray-800/50 text-gray-100'
                       }`}
                     >
-                      {message.content}
+                      {formatMessage(message.content)}
                     </div>
                   </div>
                 ))}
@@ -257,17 +315,28 @@ export default function ChatPage() {
               {/* Input Area */}
               <form onSubmit={handleSendMessage} className="p-4 border-t border-gray-800">
                 <div className="flex space-x-4">
-                  <input
-                    type="text"
+                  <textarea
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    placeholder="Type your message..."
-                    className="flex-1 bg-gray-800/50 text-white placeholder-gray-400 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        if (input.trim()) {
+                          handleSendMessage(e);
+                        }
+                      }
+                    }}
+                    placeholder="Type your message... Use * for italic and ** for bold text. Press Shift + Enter for new line"
+                    className="flex-1 bg-gray-800/50 text-white placeholder-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 min-h-[100px] max-h-[200px] resize-y"
+                    style={{ 
+                      height: '100px',
+                      lineHeight: '1.5'
+                    }}
                   />
                   <button
                     type="submit"
                     disabled={!input.trim()}
-                    className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="h-fit bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Send
                   </button>

@@ -1,6 +1,6 @@
 ## Tutorial
 
-Step 1 : Open CMD and:
+Step 1 : Open CMD in the folder (skibidi-ai) and type:
 
 ```bash
 npm run dev

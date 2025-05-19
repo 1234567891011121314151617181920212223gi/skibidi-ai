@@ -12,6 +12,7 @@ module.exports = {
         'gradient-xy': 'gradient-xy 15s ease infinite',
         'blink': 'blink 1s step-end infinite',
         'shake': 'shake 0.5s ease-in-out',
+        gradient: 'gradient 6s linear infinite',
       },
       keyframes: {
         fadeIn: {
@@ -40,7 +41,11 @@ module.exports = {
           '0%, 100%': { transform: 'translateX(0)' },
           '25%': { transform: 'translateX(-5px)' },
           '75%': { transform: 'translateX(5px)' },
-        }
+        },
+        gradient: {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
       },
     },
   },
