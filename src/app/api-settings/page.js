@@ -400,10 +400,10 @@ export default function ApiSettingsPage() {
                       This key is only stored locally in your device and never sent to server.
                     </span>
                     <span className="block mt-4 text-yellow-400">
-                      OpenAI is NOT FREE. They will give you 5$ for trial (~500 messages), after that you need to pay OpenAI to use their API.
+                      OpenAI is NOT FREE. They will give you $5 for trial (~500 messages), after that you need to pay OpenAI to use their API.
                     </span>
                     <span className="block mt-4">
-                      If you see an error about quota or billing, it means you used up OpenAI free 5$ credit. Go to 
+                      If you see an error about quota or billing, it means you used up OpenAI free $5 credit. Go to 
                       <a href="https://platform.openai.com/account/billing" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 ml-1">account/billing</a> to 
                       update your billing information.
                     </span>
@@ -477,7 +477,7 @@ export default function ApiSettingsPage() {
                     placeholder="sk-XXXXXXXXXXXXXXXXXXXX"
                   />
                   <p className="mt-2 text-gray-300 text-sm">
-                    Key of the reverse proxy. Leave this empty if you don't know what it is.
+                    Key of the reverse proxy. Leave this empty if you don&apos;t know what it is.
                     <br />
                     <span className="text-red-400">DO NOT put your OpenAI API key here.</span>
                   </p>
