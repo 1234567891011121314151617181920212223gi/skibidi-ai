@@ -31,9 +31,9 @@ export default function CreatePage() {
 
   const characterTags = [
     'Male', 'Female',
-    'Magic', 'Sci-Fi', 'Fantasy',
+    'Magical', 'Sci-Fi', 'Fantasy',
     'Enemies to Lovers', 'Friends to Lovers',
-    'Demi-Human', 'Villain', 'Hero'
+    'Demi-Human', 'Villain', 'Hero', 'RPG', 'Monster', 'Furry'
   ];
 
   const handleInputChange = (e) => {
