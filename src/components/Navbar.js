@@ -39,6 +39,12 @@ export default function Navbar() {
               Create Character
             </Link>
             <Link 
+              href="/persona" 
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              Persona
+            </Link>
+            <Link 
               href="/api-settings" 
               className="text-gray-300 hover:text-white transition-colors"
             >

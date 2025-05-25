@@ -2,25 +2,34 @@
 
 import { useEffect, useState } from 'react';
 import { auth } from "../lib/firebase";
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import Footer from "@/components/Footer";
 import TypeWriter from "@/components/TypeWriter";
 
-export default function SignInPage() {
+export default function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isSignUp, setIsSignUp] = useState(false);
   const router = useRouter();
 
-  const handleEmailLogin = async (e) => {
+  const handleAuth = async (e) => {
     e.preventDefault();
     setErrorMessage("");
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      if (isSignUp) {
+        await createUserWithEmailAndPassword(auth, email, password);
+      } else {
+        await signInWithEmailAndPassword(auth, email, password);
+      }
       router.push("/home");
     } catch (error) {
-      setErrorMessage("Invalid email or password");
+      setErrorMessage(
+        isSignUp 
+          ? "Failed to create account. Email might be in use." 
+          : "Invalid email or password"
+      );
     }
   };
 
@@ -76,7 +85,30 @@ export default function SignInPage() {
             </div>
 
             <div className="mx-auto max-w-md">
-              <form onSubmit={handleEmailLogin} className="space-y-4">
+              <div className="flex justify-center space-x-4 mb-6">
+                <button
+                  onClick={() => setIsSignUp(false)}
+                  className={`px-4 py-2 rounded-lg transition-all duration-300 ${
+                    !isSignUp 
+                      ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white' 
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  Sign In
+                </button>
+                <button
+                  onClick={() => setIsSignUp(true)}
+                  className={`px-4 py-2 rounded-lg transition-all duration-300 ${
+                    isSignUp 
+                      ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white' 
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  Sign Up
+                </button>
+              </div>
+
+              <form onSubmit={handleAuth} className="space-y-4">
                 <input
                   type="email"
                   value={email}
@@ -98,7 +130,7 @@ export default function SignInPage() {
                   type="submit"
                   className="w-full px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition-all duration-300"
                 >
-                  Sign In
+                  {isSignUp ? 'Sign Up' : 'Sign In'}
                 </button>
               </form>
 

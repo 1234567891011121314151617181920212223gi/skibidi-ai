@@ -184,7 +184,7 @@ ${apiSettings.customPrompt || ''}`.trim();
             body: JSON.stringify({
               model: apiSettings.model,
               messages: messageHistory,
-              max_tokens: 1000
+              max_tokens: 10000
             })
           });
           break;
