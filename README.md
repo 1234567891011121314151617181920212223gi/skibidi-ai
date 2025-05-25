@@ -59,11 +59,11 @@ Navigate to [http://localhost:3000](http://localhost:3000) and enjoy.
 
 ## 🤝 Contributing
 
-Contributions are welcome! See the **Disclaimer** for my Discord.
+See the **Disclaimer** for my Discord. I created this shit for fun so don't contribute it.
 
 ## 💀 *License*
-> I created this ~~mess~~ masterpiece solo. No license because we die like men.
-> You'll probably find the API keys anyway. Just don't be a jerk about it.
+> I created this ~~mess~~ masterpiece solo. There are no fucking licenses.
+> You'll probably find the API keys anyway. Just don't be a jerk about it. (PLEASE)
 
 ## ⚠️ *Disclaimer*
 <div align="center">

@@ -1,6 +1,6 @@
 @echo off
 echo ====================================
-echo       SkibidiAI Setup Script
+echo       Skibidi Toilet Sigma
 echo ====================================
 echo.
 
